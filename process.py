@@ -8,13 +8,13 @@ import os
 
 # code adapted from article -- http://creativemorphometrics.co.vu/blog/2014/08/05/automated-outlines-with-opencv-in-python/
 
-target = sys.argv[1]
-
 def getContours(f, indir, outpath):
     filename = os.path.join(indir, f)
     img = cv.imread(filename)
     img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-    ret, thresh1 = cv.threshold(img, 10, 255, cv.THRESH_BINARY)
+    # ret, thresh1 = cv.threshold(img, 10, 255, cv.THRESH_BINARY)
+    thresh1 = cv.adaptiveThreshold(img, 255, cv.ADAPTIVE_THRESH_MEAN_C,\
+            cv.THRESH_BINARY, 11, 2)
     kernel = np.ones((2,2), np.uint8)
     erosion = cv.erode(thresh1, kernel, iterations=1)
     opening = cv.morphologyEx(erosion, cv.MORPH_OPEN, kernel)
